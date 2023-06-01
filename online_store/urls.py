@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls.static import static
 
-from products.views import hello_view, now_date_view, goodby_view, products_view, main_page, product_detail_view
+from products.views import hello_view, now_date_view, goodby_view, products_view, main_page, product_detail_view, create_product_view
 from online_store import settings
 
 urlpatterns = [
@@ -30,6 +30,7 @@ urlpatterns = [
     path('', main_page),
     path('products/', products_view),
 
+    path('products/create/', create_product_view),
     path('products/<int:id>/', product_detail_view)
 ]
 
