@@ -21,6 +21,8 @@ from django.conf.urls.static import static
 from products.views import hello_view, now_date_view, goodby_view, products_view, main_page, product_detail_view, create_product_view
 from online_store import settings
 
+from users.views import register_view, auth_view, logout_view
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', hello_view),
@@ -31,7 +33,11 @@ urlpatterns = [
     path('products/', products_view),
 
     path('products/create/', create_product_view),
-    path('products/<int:id>/', product_detail_view)
+    path('products/<int:id>/', product_detail_view),
+
+    path('users/register/', register_view),
+    path('users/auth/', auth_view),
+    path('users/logout/', logout_view)
 ]
 
 
