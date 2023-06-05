@@ -2,6 +2,7 @@ from django.shortcuts import HttpResponse, render, redirect
 from datetime import datetime
 from products.models import Product, Review
 from products.forms import ProductCreateForm, ReviewCreateForm
+from products.constants import PAGINATION_LIMIT
 
 
 def hello_view(request):
@@ -27,9 +28,26 @@ def main_page(request):
 def products_view(request):
     if request.method == "GET":
         products = Product.objects.all()
+        page = int(request.GET.get('page', 1))
+
+        max_page = products.__len__() / PAGINATION_LIMIT
+        if round(max_page) < max_page:
+            max_page = round(max_page) + 1
+        else:
+            max_page = round(max_page)
+
+        search_title = request.GET.get('search_title')
+        search_description = request.GET.get('search_description')
+        if search_title:
+            products = products.filter(title__contains=search_title)
+        if search_description:
+            products = products.filter(title__contains=search_description)
+
+        products = products[PAGINATION_LIMIT * (page - 1):PAGINATION_LIMIT * page]
 
         context = {
-            'products': products
+            'products': products,
+            'pages': range(1, max_page+1)
         }
         return render(request, 'products/products.html', context=context)
 
@@ -41,7 +59,7 @@ def product_detail_view(request, id):
         context = {
             'product': product,
             'reviews': product.review_set.all(),
-            'form': ReviewCreateForm
+            'form': ReviewCreateForm,
         }
 
         return render(request, 'products/detail.html', context=context)

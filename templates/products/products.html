@@ -3,6 +3,13 @@
 
 {% block content %}
 
+    <div class="search">
+        <form action="/products/" method="get">
+            <input type="text" name="search_title" placeholder="search title">
+            <input type="text" name="search_description" placeholder="search description">
+            <input type="submit" value="Search_title">
+        </form>
+    </div>
     <style type="text/css">
         .products {
             width: 80%;
@@ -37,6 +44,15 @@
                     <a href="/products/{{ product.id }}/" class="card-link">More</a>
                 </div>
             </div>
+        {% endfor %}
+    </div>
+    <div class="pages">
+        {% for page in pages %}
+            <a href="/products/?page={{ page }}">
+                <button>
+                    {{ page }}
+                </button>
+            </a>
         {% endfor %}
     </div>
 
